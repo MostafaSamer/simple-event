@@ -6,6 +6,7 @@ export const store = configureStore({
   reducer: {
     eventsReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 setupListeners(store.dispatch);

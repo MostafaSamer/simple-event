@@ -1,50 +1,62 @@
 "use client";
 
-import styles from './page.module.css'
-import { FormEvent, useState } from 'react';
-import { addEvent, reset } from "@/redux/features/eventsSlice";
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import styles from "./page.module.css";
+import { FormEvent, useState } from "react";
+import { addEvent } from "@/redux/features/eventsSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { useRouter } from "next/navigation";
 
 export default function SingleEvent() {
-
+  const { push } = useRouter();
   const dispatch = useAppDispatch();
-  const nextEventId = useAppSelector((state) => state.eventsReducer.nextEventId);
 
-  const [name, setName] = useState('');
-  const [date, setDate] = useState('');
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(addEvent({
-      date: new Date(date),
-      eventName: name,
-      id: nextEventId,
-    }))
+    dispatch(
+      addEvent({
+        date: date,
+        eventName: name,
+      })
+    );
+    push("/");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="date">Date:</label>
-        <input
-          type="date"
-          id="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
+        <div className={styles.formField}>
+          <label htmlFor="name" className={styles.label}>
+            Name:
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+        </div>
+        <div className={styles.formField}>
+          <label htmlFor="date" className={styles.label}>
+            Date:
+          </label>
+          <input
+            type="date"
+            id="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+        </div>
+        <button type="submit" className={styles.submitButton}>
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }

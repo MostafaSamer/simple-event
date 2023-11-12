@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type EventState = {
-    id: number;
+    id?: number;
     eventName: string;
-    date: Date;
+    date: String;
 };
 
 const initialState = {
@@ -17,11 +17,12 @@ export const event = createSlice({
     reducers: {
         reset: () => initialState,
         addEvent: (state, action: PayloadAction<EventState>) => {
+            action.payload.id = state.nextEventId;
             state.events.push(action.payload);
             state.nextEventId += 1;
         },
         deleteEvent: (state, action: PayloadAction<number>) => {
-            // to be done
+            state.events.filter(event => event.id != action.payload);
         }
     },
 });
